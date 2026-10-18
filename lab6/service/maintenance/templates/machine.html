@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Станок {{ machine.inventory_no }} — история ремонтов</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/repair.css">
+</head>
+<body class="machine">
+<div class="top-bar">
+    {% if user.is_authenticated %}
+    <span>{{ user.username }}</span>
+    <a href="{% url 'create_repair' %}">Оформить ремонт</a>
+    <a href="{% url 'logout_page' %}">Выход</a>
+    {% else %}
+    <a href="{% url 'register' %}">Регистрация</a>
+    <a href="{% url 'login_page' %}">Вход</a>
+    {% endif %}
+</div>
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис — техническое обслуживание станков"/>
+</div>
+<div class="machine">
+    <h1>Станок {{ machine.inventory_no }}</h1>
+    <table class="grid">
+        <tr>
+            <th>Тип станка</th>
+            <td>{{ machine.machine_type.name }}</td>
+            <th>Марка</th>
+            <td>{{ machine.brand.name }}</td>
+        </tr>
+        <tr>
+            <th>Страна-производитель</th>
+            <td>{{ machine.country.name }}</td>
+            <th>Год выпуска</th>
+            <td>{{ machine.release_year }}</td>
+        </tr>
+        <tr>
+            <th>Предприятие-клиент</th>
+            <td colspan="3">{{ machine.enterprise.name }}</td>
+        </tr>
+    </table>
+
+    <h2>Отремонтирован раз: {{ repairs_count }} · суммарная стоимость: {{ total_cost }} руб.</h2>
+
+    <table class="grid">
+        <thead>
+        <tr>
+            <th>Вид ремонта</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Факт, дн.</th>
+            <th>Норматив, дн.</th>
+            <th>Стоимость, руб.</th>
+        </tr>
+        </thead>
+        {% for repair in repairs %}
+        <tr>
+            <td><a href="{% url 'get_repair' repair.id %}">{{ repair.repair_type.name }}</a></td>
+            <td>{{ repair.start_date|date:"d.m.Y" }}</td>
+            <td>{{ repair.end_date|date:"d.m.Y" }}</td>
+            <td>{{ repair.duration_actual }}</td>
+            <td>{{ repair.repair_type.duration_days }}</td>
+            <td>{{ repair.repair_type.cost }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Ремонтов пока не было.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p class="nav-link">
+        <a href="{% url 'archive' %}">Все записи</a> ·
+        <a href="{% url 'machines_list' %}">Все станки</a>
+    </p>
+</div>
+</body>
+</html>

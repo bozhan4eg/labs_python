@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>СтанкоСервис — оформить ремонт</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/repair.css">
+</head>
+<body class="create">
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис — техническое обслуживание станков"/>
+</div>
+<div class="content">
+    <h1>Оформить факт ремонта</h1>
+    <form method="POST">{% csrf_token %}
+        <label for="id_machine">Станок</label>
+        <select name="machine" id="id_machine">
+            <option value="">— выберите станок —</option>
+            {% for m in machines %}
+            <option value="{{ m.id }}" {% if form.machine == m.id|stringformat:"s" %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="id_repair_type">Вид ремонта</label>
+        <select name="repair_type" id="id_repair_type">
+            <option value="">— выберите вид ремонта —</option>
+            {% for rt in repair_types %}
+            <option value="{{ rt.id }}" {% if form.repair_type == rt.id|stringformat:"s" %}selected{% endif %}>{{ rt.name }} ({{ rt.duration_days }} дн., {{ rt.cost }} руб.)</option>
+            {% endfor %}
+        </select>
+
+        <label for="id_start_date">Дата начала</label>
+        <input type="date" name="start_date" id="id_start_date" value="{{ form.start_date }}">
+
+        <label for="id_end_date">Дата окончания</label>
+        <input type="date" name="end_date" id="id_end_date" value="{{ form.end_date }}">
+
+        <label for="id_comment">Выполненные работы</label>
+        <textarea name="comment" id="id_comment" placeholder="Описание выполненных работ">{{ form.comment }}</textarea>
+
+        <input type="submit" value="Сохранить">
+    </form>
+    {% if form.errors %}
+    <ul class="form-errors">
+        {% for e in form.errors %}
+        <li>{{ e }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <p class="nav-link"><a href="{% url 'archive' %}">Все записи</a></p>
+</div>
+</body>
+</html>

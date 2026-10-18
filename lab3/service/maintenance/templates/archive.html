@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Журнал ремонтов</title>
+</head>
+<body>
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис"/>
+</div>
+<div class="archive">
+    {% for repair in repairs %}
+    <div class="one-post">
+        <h2 class="post-title">{{ repair.machine.inventory_no }} — {{ repair.repair_type.name }}</h2>
+        <div class="article-info">
+            <div class="article-author">{{ repair.author.username }}</div>
+            <div class="article-created-date">{{ repair.start_date|date:"d.m.Y" }} — {{ repair.end_date|date:"d.m.Y" }}</div>
+        </div>
+        <p class="article-text">{{ repair.get_excerpt }}</p>
+    </div>
+    {% empty %}
+    <p>В журнале пока нет ни одной записи о ремонте.</p>
+    {% endfor %}
+</div>
+</body>
+</html>

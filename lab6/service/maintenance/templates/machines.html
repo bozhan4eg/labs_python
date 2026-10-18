@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Статистика ремонтов по станкам</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/repair.css">
+</head>
+<body class="machines">
+<div class="top-bar">
+    {% if user.is_authenticated %}
+    <span>{{ user.username }}</span>
+    <a href="{% url 'create_repair' %}">Оформить ремонт</a>
+    <a href="{% url 'logout_page' %}">Выход</a>
+    {% else %}
+    <a href="{% url 'register' %}">Регистрация</a>
+    <a href="{% url 'login_page' %}">Вход</a>
+    {% endif %}
+</div>
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис — техническое обслуживание станков"/>
+</div>
+<div class="machines">
+    <h1>Сколько раз ремонтировался каждый станок</h1>
+    <table class="grid">
+        <thead>
+        <tr>
+            <th>Инв. номер</th>
+            <th>Тип</th>
+            <th>Марка</th>
+            <th>Страна</th>
+            <th>Год</th>
+            <th>Предприятие</th>
+            <th>Ремонтов</th>
+            <th>Сумма, руб.</th>
+            <th>Последний ремонт</th>
+        </tr>
+        </thead>
+        {% for m in machines %}
+        <tr>
+            <td><a href="{% url 'get_machine' m.id %}">{{ m.inventory_no }}</a></td>
+            <td>{{ m.machine_type.name }}</td>
+            <td>{{ m.brand.name }}</td>
+            <td>{{ m.brand.country.name }}</td>
+            <td>{{ m.release_year }}</td>
+            <td>{{ m.enterprise.name }}</td>
+            <td>{{ m.repairs_num }}</td>
+            <td>{{ m.total_cost|default:"0" }}</td>
+            <td>{{ m.last_repair_date|date:"d.m.Y"|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p class="nav-link"><a href="{% url 'archive' %}">Все записи</a></p>
+</div>
+</body>
+</html>

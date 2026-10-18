@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Журнал ремонтов — СтанкоСервис</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/repair.css">
+</head>
+<body class="archive">
+<div class="top-bar">
+    {% if user.is_authenticated %}
+    <span>{{ user.username }}</span>
+    <a href="{% url 'create_repair' %}">Оформить ремонт</a>
+    <a href="{% url 'logout_page' %}">Выход</a>
+    {% else %}
+    <a href="{% url 'register' %}">Регистрация</a>
+    <a href="{% url 'login_page' %}">Вход</a>
+    {% endif %}
+</div>
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис — техническое обслуживание станков"/>
+</div>
+<div class="archive">
+    <h1>Записи журнала ремонтов</h1>
+    {% for repair in repairs %}
+    <div class="one-post">
+        <h2 class="post-title">
+            <a href="{% url 'get_repair' repair.id %}">{{ repair.machine.inventory_no }} — {{ repair.repair_type.name }}</a>
+        </h2>
+        <div class="article-info">
+            <div class="article-author">{{ repair.author.username }}</div>
+            <div class="article-created-date">{{ repair.start_date|date:"d.m.Y" }} — {{ repair.end_date|date:"d.m.Y" }}</div>
+        </div>
+        <p class="article-text">{{ repair.get_excerpt }}</p>
+        <button type="button" class="fold-button">свернуть</button>
+    </div>
+    {% empty %}
+    <p>В журнале пока нет ни одной записи о ремонте.</p>
+    {% endfor %}
+    <p class="nav-link">
+        <a href="{% url 'machines_list' %}">Статистика по станкам</a>
+    </p>
+</div>
+<!-- скрипты подключаем ближе к закрывающему тегу body,
+     чтобы загрузка сценариев не мешала загрузке контента -->
+<script src="{{ STATIC_URL }}js/helloworld.js"></script>
+<script src="{{ STATIC_URL }}js/fold-repair.js"></script>
+</body>
+</html>

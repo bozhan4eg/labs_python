@@ -1,0 +1,112 @@
+/* Общие стили страниц журнала ремонтов (макет lab4_main / lab4_item). */
+body {
+    background: #1abc9c;
+    font-family: Tahoma, Arial, sans-serif;
+    color: #ffffff;
+    margin: 0;
+    padding: 0 0 40px 0;
+}
+
+/* логотип по центру */
+.header img {
+    display: block;
+    width: 318px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* контент по центру, фиксированная ширина как в макете */
+.archive,
+.repair,
+.machine,
+.machines {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 30px;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+    padding: 12px 0;
+    margin: 20px 0 26px 0;
+}
+
+h2.post-title {
+    font-size: 24px;
+    margin: 0 0 8px 0;
+}
+
+/* заголовки-ссылки белые, как в макете */
+.post-title a,
+.nav-link a {
+    color: #ffffff;
+}
+
+.one-post {
+    margin-bottom: 34px;
+}
+
+/* имя автора слева, дата справа на одной линии */
+.article-author {
+    width: 50%;
+    float: left;
+}
+.article-created-date {
+    text-align: right;
+}
+.article-info {
+    overflow: hidden;
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.article-text {
+    line-height: 1.5;
+}
+
+/* таблицы (карточка ремонта, статистика) */
+table.grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px 0;
+}
+table.grid th,
+table.grid td {
+    border: 1px solid #ffffff;
+    padding: 6px 10px;
+    text-align: left;
+    font-size: 14px;
+}
+table.grid th {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-link {
+    margin-top: 26px;
+}
+
+/* кнопка свернуть/развернуть (лабораторная работа № 7) */
+.fold-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 12px;
+    border: 1px solid #ffffff;
+    background: transparent;
+    color: #ffffff;
+    font-size: 13px;
+    cursor: pointer;
+}
+.fold-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* компактная реализация сворачивания через класс folded у родителя one-post */
+.one-post.folded .article-author,
+.one-post.folded .article-created-date,
+.one-post.folded .article-text {
+    display: none;
+}

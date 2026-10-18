@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ post.machine.inventory_no }} — {{ post.repair_type.name }}</title>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/repair.css">
+</head>
+<body class="repair">
+<div class="top-bar">
+    {% if user.is_authenticated %}
+    <span>{{ user.username }}</span>
+    <a href="{% url 'create_repair' %}">Оформить ремонт</a>
+    <a href="{% url 'logout_page' %}">Выход</a>
+    {% else %}
+    <a href="{% url 'register' %}">Регистрация</a>
+    <a href="{% url 'login_page' %}">Вход</a>
+    {% endif %}
+</div>
+<div class="header">
+    <img src="{{ STATIC_URL }}img/logo.png" alt="СтанкоСервис — техническое обслуживание станков"/>
+</div>
+<div class="repair">
+    <h1>{{ post.machine.inventory_no }}: {{ post.repair_type.name }}</h1>
+    <div class="article-info">
+        <div class="article-author">заявку оформил: {{ post.author.username }}</div>
+        <div class="article-created-date">{{ post.start_date|date:"d.m.Y" }} — {{ post.end_date|date:"d.m.Y" }}</div>
+    </div>
+    <p class="article-text">{{ post.comment }}</p>
+
+    <table class="grid">
+        <tr>
+            <th>Станок</th>
+            <td>{{ post.machine.inventory_no }}</td>
+            <th>Тип станка</th>
+            <td>{{ post.machine.machine_type.name }}</td>
+        </tr>
+        <tr>
+            <th>Марка</th>
+            <td>{{ post.machine.brand.name }}</td>
+            <th>Страна-производитель</th>
+            <td>{{ post.machine.country.name }}</td>
+        </tr>
+        <tr>
+            <th>Год выпуска</th>
+            <td>{{ post.machine.release_year }}</td>
+            <th>Предприятие-клиент</th>
+            <td>{{ post.machine.enterprise.name }}</td>
+        </tr>
+        <tr>
+            <th>Вид ремонта</th>
+            <td>{{ post.repair_type.name }}</td>
+            <th>Стоимость, руб.</th>
+            <td>{{ post.repair_type.cost }}</td>
+        </tr>
+        <tr>
+            <th>Норматив, дн.</th>
+            <td>{{ post.repair_type.duration_days }}</td>
+            <th>Фактически, дн.</th>
+            <td>{{ post.duration_actual }}{% if post.is_delayed %} (задержка){% endif %}</td>
+        </tr>
+    </table>
+
+    <p class="nav-link">
+        <a href="{% url 'archive' %}">Все записи</a> ·
+        <a href="{% url 'get_machine' post.machine.id %}">Карточка станка ({{ post.machine.repairs_count }} рем.)</a>
+    </p>
+</div>
+</body>
+</html>
